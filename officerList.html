@@ -17,11 +17,12 @@
 
     <link rel="stylesheet" href="static/css/responsive.css" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-route.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-route.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="/lib/angular-google-gapi-0.1.2/angular-google-gapi.js"></script>
     <!--[if lt IE 9]>
         <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
@@ -29,7 +30,6 @@
 
     <!-- External JavaScripts
     ============================================= -->
-    <script type="text/javascript" src="static/js/jquery.js"></script>
     <script type="text/javascript" src="static/js/plugins.js"></script>
 
     <!-- Document Title
@@ -115,46 +115,52 @@ olark.identify('4575-463-10-2442');/*]]>*/</script><noscript><a href="https://ww
 
                 <div class="container clearfix">
 
-                    <h4><center>Browse Admissions Officers on HyperAdmit</center></h4>
-                    <br>
-                        <form action="search.html" method="get" class="nobottommargin">
-                            <input type="text" name="q" class="form-control" value="" placeholder="Type &amp; Hit Enter..">
-                        </form>
+                    <h4>Browse Admissions Officers on HyperAdmit</h4><br>
+                    <alert ng-repeat="alert in vm.alerts" type="{{ alert.type }}" close="vm.closeAlert($index)">{{ alert.msg }}</alert>
                 </div>
 
                 <div class="container clearfix">
-
-                        <ul id="myTab2" class="nav nav-pills boot-tabs" style="margin-top: 10px">
-                          <li class="dropdown">
-                            <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">School Type<b class="caret"></b></a>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-                              <li><a data-toggle="tab">Undergraduate</a></li>
-                              <li><a data-toggle="tab">Business School</a></li>
-                              <li><a data-toggle="tab">Law School</a></li>
-                              <li><a data-toggle="tab">Medical School</a></li>
-                            </ul>
-                          </li>
-                          <li class="dropdown">
-                            <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">College Rank <b class="caret"></b></a>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-                              <li><a data-toggle="tab">Ivy League</a></li>
-                              <li><a data-toggle="tab">Top 20</a></li>
-                              <li><a data-toggle="tab">Top 40</a></li>
-                            </ul>
-                          </li>
-                          <li class="dropdown">
-                            <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">Admissions Counselor <b class="caret"></b></a>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-                              <li><a data-toggle="tab">@fat</a></li>
-                              <li><a data-toggle="tab">@mdo</a></li>
-                            </ul>
-                          </li>
-                        </ul>
-
+                      <div class="btn-group" dropdown>
+                          <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>
+                            School Types <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu">
+                            <li ng-repeat="item in vm.dropOne"><button ng-click="vm.dropdownSelect(item, 1)">{{ item }}</button></li>
+                          </ul>
+                      </div>
+                      <div class="btn-group" dropdown>
+                          <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>
+                            College Rank <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu">
+                            <li ng-repeat="item in vm.dropTwo"><button ng-click="vm.dropdownSelect(item, 2)">{{ item }}</button></li>
+                          </ul>
+                      </div>
+                      <div class="btn-group" dropdown>
+                          <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>
+                            Admissions Counselor <span class="caret"></span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu">
+                            <li ng-repeat="item in vm.dropThree"><button ng-click="vm.dropdownSelect(item, 3)">{{ item }}</button></li>
+                          </ul>
+                      </div>
                 </div>
 
                 <div class="container clearfix">
-
+                    <accordion close-others="oneAtATime">
+                        <accordion-group ng-repeat="ad_off in vm.ad_offs" heading="{{ ad_off.alias }}">
+                            <div>
+                                Who am I?
+                                <span>{{ ad_off.whoami }}</span>
+                            </div>
+                            <div class="line"></div>
+                            <div>
+                                How I Can Help
+                                <span>{{ ad_off.howcanihelp }}</span>
+                            </div>
+                        </accordion-group>
+                    </accordion>
+                    <!--
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -255,7 +261,7 @@ olark.identify('4575-463-10-2442');/*]]>*/</script><noscript><a href="https://ww
                         </div>
 
                     </div>
-
+                    -->
                 </div>
 
             </div>
@@ -312,6 +318,6 @@ olark.identify('4575-463-10-2442');/*]]>*/</script><noscript><a href="https://ww
     <!-- Footer Scripts
     ============================================= -->
     <script type="text/javascript" src="static/js/functions.js"></script>
-
+    <script type="text/javascript" src="controllers/controller.js"></script>
 </body>
 </html>

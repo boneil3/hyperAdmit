@@ -8,12 +8,16 @@ handlers:
 - url: /_ah/spi/.*
   script: main.APPLICATION
 
+- url: /
+  static_files: index.html
+  upload: index\.html
+
 - url: /officers
   static_files: officerList.html
   upload: officerList\.html
 
-- url: /frontEnd
-  static_dir: frontEnd
+- url: /controllers
+  static_dir: controllers
 
 - url: /lib
   static_dir: lib
