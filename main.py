@@ -1,5 +1,8 @@
 __author__ = 'Brendan'
 
+import sys
+sys.path.append('lib')
+
 from endpoint_classes import *
 from models import *
 import endpoints

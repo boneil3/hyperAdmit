@@ -9,8 +9,8 @@ handlers:
   script: main.APPLICATION
 
 - url: /officers
-  static_files: frontEnd/officerList.html
-  upload: frontEnd/officerList\.html
+  static_files: officerList.html
+  upload: officerList\.html
 
 - url: /frontEnd
   static_dir: frontEnd
