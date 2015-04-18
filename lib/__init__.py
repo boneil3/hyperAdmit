@@ -1,1 +1,2 @@
 import endpoints_proto_datastore
+from endpoints_proto_datastore.ndb import *

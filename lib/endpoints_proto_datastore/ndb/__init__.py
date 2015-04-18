@@ -1,4 +1,7 @@
 __all__ = []
+from lib.endpoints_proto_datastore.ndb import model
+from lib.endpoints_proto_datastore.ndb import properties
+from lib.endpoints_proto_datastore.ndb import utils
 
 from lib.endpoints_proto_datastore.ndb.model import *
 __all__ += model.__all__

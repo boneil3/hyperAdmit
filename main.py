@@ -1,8 +1,6 @@
 __author__ = 'Brendan'
 
-import sys
-sys.path.insert(0, 'lib')
-
+from lib.endpoints_proto_datastore import ndb
 from endpoint_classes import *
 from models import *
 import endpoints
