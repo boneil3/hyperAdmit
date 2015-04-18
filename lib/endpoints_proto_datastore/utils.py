@@ -9,12 +9,10 @@ be used by utility methods in the datastore API specific code.
 __all__ = ['GeoPtMessage', 'MessageFieldsSchema', 'UserMessage',
            'method', 'positional', 'query_method']
 
-
 import datetime
 
 from protorpc import messages
 from protorpc import util as protorpc_util
-
 from google.appengine.api import users
 
 
@@ -359,6 +357,8 @@ def RaiseNotImplementedMethod(property_class, explanation=None):
 
 
 def _GetEndpointsMethodDecorator(decorator_name, modelclass, **kwargs):
+  from cloudpoints.libs.endpoints_proto_datastore.ndb import model
+
   """Decorate a ProtoRPC method for use by the endpoints model passed in.
 
   Requires exactly two positional arguments and passes the rest of the keyword
@@ -377,7 +377,6 @@ def _GetEndpointsMethodDecorator(decorator_name, modelclass, **kwargs):
     raise TypeError('Decorator %s not allowed.' % (decorator_name,))
 
   # Import here to avoid circular imports
-  from .ndb import model
   if IsSubclass(modelclass, model.EndpointsModel):
     return getattr(modelclass, decorator_name)(**kwargs)
 

@@ -34,8 +34,8 @@ libraries:
 - name: endpoints
   version: 1.0
 - name: protorpc
-  version: 1.0
+  version: latest
 - name: ssl
   version: latest
 - name: webapp2
-  version: "2.5.2"
+  version: latest

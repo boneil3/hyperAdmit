@@ -1,5 +1,6 @@
 __author__ = 'Brendan'
-
+import sys
+sys.path.insert(0, 'lib')
 from google.appengine.ext import ndb
 import endpoints
 
@@ -9,7 +10,9 @@ from protorpc import remote
 from models import AdmissionsOfficer
 
 
-@endpoints.api(name='hyperadmit', version='v1')
+@endpoints.api(name='hyperadmit', version='v1',
+               allowed_client_ids=[endpoints.API_EXPLORER_CLIENT_ID],
+               scopes=[endpoints.EMAIL_SCOPE])
 class HyperAdmit(remote.Service):
     """ HyperAdmit API v1 """
 

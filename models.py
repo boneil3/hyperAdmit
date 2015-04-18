@@ -1,12 +1,14 @@
 __author__ = 'Brendan'
+import sys
+sys.path.insert(0, 'lib')
 from lib.endpoints_proto_datastore.ndb.model import EndpointsModel
 from lib.endpoints_proto_datastore.ndb.properties import EndpointsAliasProperty
 from google.appengine.ext import ndb
 import endpoints
-import webapp2.webapp2_extras
+import webapp2_extras.appengine.auth.models
 
 
-class User(EndpointsModel, webapp2.webapp2_extras.appengine.auth.models.User):
+class User(EndpointsModel, webapp2_extras.appengine.auth.models.User):
     """ User Base Model """
 
     email = ndb.StringProperty(required=True)

@@ -24,10 +24,11 @@ Defined here:
 
 import datetime
 import warnings
-warnings.simplefilter('default')  # To allow DeprecationWarning
 
-from . import utils as ndb_utils
-from .. import utils
+from cloudpoints.libs.endpoints_proto_datastore import utils
+from cloudpoints.libs.endpoints_proto_datastore.ndb import utils as ndb_utils
+
+warnings.simplefilter('default')  # To allow DeprecationWarning
 
 import endpoints
 

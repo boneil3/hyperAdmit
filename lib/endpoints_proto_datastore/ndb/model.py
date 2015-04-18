@@ -10,13 +10,21 @@ than converting between ProtoRPC messages and entities and then back again.
 
 import functools
 import itertools
+
+from cloudpoints.libs.endpoints_proto_datastore import utils
+from cloudpoints.libs.endpoints_proto_datastore.ndb import utils as ndb_utils
+
+
+try:
+  import json
+except ImportError:
+  import simplejson as json
+import pickle
 import re
 
 import endpoints
 
 from . import properties
-from . import utils as ndb_utils
-from .. import utils
 
 from protorpc import messages
 from protorpc import message_types
@@ -93,6 +101,10 @@ def ToValue(prop, value):
     return value.ToMessage()
   elif hasattr(prop, 'ToValue') and callable(prop.ToValue):
     return prop.ToValue(value)
+  elif isinstance(prop, ndb.JsonProperty):
+    return json.dumps(value)
+  elif isinstance(prop, ndb.PickleProperty):
+    return pickle.dumps(value)
   elif isinstance(prop, ndb.UserProperty):
     return utils.UserMessageFromUser(value)
   elif isinstance(prop, ndb.GeoPtProperty):
@@ -137,6 +149,10 @@ def FromValue(prop, value):
 
   if hasattr(prop, 'FromValue') and callable(prop.FromValue):
     return prop.FromValue(value)
+  elif isinstance(prop, ndb.JsonProperty):
+    return json.loads(value)
+  elif isinstance(prop, ndb.PickleProperty):
+    return pickle.loads(value)
   elif isinstance(prop, ndb.UserProperty):
     return utils.UserMessageToUser(value)
   elif isinstance(prop, ndb.GeoPtProperty):
@@ -1333,20 +1349,16 @@ class EndpointsModel(ndb.Model):
     if request_fields is not None and request_message is not None:
       raise TypeError('Received both a request message class and a field list '
                       'for creating a request message class.')
-
-    proto_message = request_message
-    if proto_message is None:
-      proto_message = cls.ProtoModel(fields=request_fields)
-
-    path = kwargs.get(PATH)
-    query_fields = []
-    if path is not None:
-      query_fields = re.findall("{(.*?)}", path)
-    if len(query_fields) > 0:
-      kwargs[REQUEST_MESSAGE] = cls.ResourceContainer(
-          message=proto_message, fields=query_fields)
-    else:
-      kwargs[REQUEST_MESSAGE] = proto_message
+    if request_message is None:
+      path = kwargs.get(PATH)
+      query_fields = []
+      if path is not None:
+        query_fields = re.findall("{(.*?)}", path)
+      if len(query_fields) > 0:
+        kwargs[REQUEST_MESSAGE] = cls.ResourceContainer(
+            message=cls.ProtoModel(fields=request_fields), fields=query_fields)
+      else:
+        kwargs[REQUEST_MESSAGE] = cls.ProtoModel(fields=request_fields)
 
     response_message = kwargs.get(RESPONSE_MESSAGE)
     if response_fields is not None and response_message is not None:
