@@ -11,9 +11,9 @@ than converting between ProtoRPC messages and entities and then back again.
 import functools
 import itertools
 
-from lib.endpoints_proto_datastore import utils
-from lib.endpoints_proto_datastore.ndb import utils as ndb_utils
-from lib.endpoints_proto_datastore.ndb import properties
+from endpoints_proto_datastore import utils
+from endpoints_proto_datastore.ndb import utils as ndb_utils
+from endpoints_proto_datastore.ndb import properties
 
 
 try:

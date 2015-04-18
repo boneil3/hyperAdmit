@@ -1,8 +1,7 @@
-__author__ = 'Brendan'
-
-from lib.endpoints_proto_datastore import ndb
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib"))
 from endpoint_classes import *
-from models import *
 import endpoints
 
 

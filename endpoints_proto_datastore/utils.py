@@ -357,7 +357,7 @@ def RaiseNotImplementedMethod(property_class, explanation=None):
 
 
 def _GetEndpointsMethodDecorator(decorator_name, modelclass, **kwargs):
-  from lib.endpoints_proto_datastore.ndb import model
+  from endpoints_proto_datastore.ndb import model
 
   """Decorate a ProtoRPC method for use by the endpoints model passed in.
 
