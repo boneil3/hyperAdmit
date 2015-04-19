@@ -11,8 +11,9 @@ than converting between ProtoRPC messages and entities and then back again.
 import functools
 import itertools
 
-from cloudpoints.libs.endpoints_proto_datastore import utils
-from cloudpoints.libs.endpoints_proto_datastore.ndb import utils as ndb_utils
+from endpoints_proto_datastore import utils
+from endpoints_proto_datastore.ndb import utils as ndb_utils
+from endpoints_proto_datastore.ndb import properties
 
 
 try:
@@ -23,8 +24,6 @@ import pickle
 import re
 
 import endpoints
-
-from . import properties
 
 from protorpc import messages
 from protorpc import message_types

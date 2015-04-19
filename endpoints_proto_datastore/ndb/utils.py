@@ -23,7 +23,7 @@ from protorpc import messages
 from google.appengine.ext import ndb
 from google.appengine.ext.ndb import msgprop
 
-from cloudpoints.libs.endpoints_proto_datastore import utils
+from endpoints_proto_datastore import utils
 
 
 __all__ = []

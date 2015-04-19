@@ -1,10 +1,7 @@
-__author__ = 'Brendan'
-
 import sys
-sys.path.insert(0, 'lib')
-
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib"))
 from endpoint_classes import *
-from models import *
 import endpoints
 
 

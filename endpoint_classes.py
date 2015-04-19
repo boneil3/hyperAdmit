@@ -1,6 +1,6 @@
 __author__ = 'Brendan'
 import sys
-sys.path.insert(0, 'lib')
+sys.path.insert(0, 'libs')
 from google.appengine.ext import ndb
 import endpoints
 

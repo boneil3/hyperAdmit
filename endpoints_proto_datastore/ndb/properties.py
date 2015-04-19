@@ -25,8 +25,9 @@ Defined here:
 import datetime
 import warnings
 
-from cloudpoints.libs.endpoints_proto_datastore import utils
-from cloudpoints.libs.endpoints_proto_datastore.ndb import utils as ndb_utils
+from endpoints_proto_datastore import utils
+from endpoints_proto_datastore.ndb import utils as ndb_utils
+
 
 warnings.simplefilter('default')  # To allow DeprecationWarning
 

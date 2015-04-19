@@ -1,8 +1,9 @@
 __author__ = 'Brendan'
 import sys
-sys.path.insert(0, 'lib')
-from lib.endpoints_proto_datastore.ndb.model import EndpointsModel
-from lib.endpoints_proto_datastore.ndb.properties import EndpointsAliasProperty
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), "lib"))
+from endpoints_proto_datastore.ndb.model import EndpointsModel
+from endpoints_proto_datastore.ndb.properties import EndpointsAliasProperty
 from google.appengine.ext import ndb
 import endpoints
 import webapp2_extras.appengine.auth.models
