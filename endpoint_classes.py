@@ -4,10 +4,16 @@ sys.path.insert(0, 'libs')
 from google.appengine.ext import ndb
 import endpoints
 
+from webapp2_extras.auth import InvalidPasswordError, InvalidAuthIdError
 from protorpc import messages
 from protorpc import message_types
 from protorpc import remote
 from models import AdmissionsOfficer
+from models import User
+
+USER_AUTH_RC = endpoints.ResourceContainer(message_types.VoidMessage,
+                                           email=ndb.StringProperty(1, required=True),
+                                           password=ndb.StringProperty(2, required=True))
 
 
 @endpoints.api(name='hyperadmit', version='v1',
@@ -15,6 +21,16 @@ from models import AdmissionsOfficer
                scopes=[endpoints.EMAIL_SCOPE])
 class HyperAdmit(remote.Service):
     """ HyperAdmit API v1 """
+
+    @endpoints.method(USER_AUTH_RC,
+                      AdmissionsOfficer.ProtoModel(),
+                      path='authuser', http_method='POST', name='auth_user')
+    def auth_user(self, request):
+        try:
+            user = User.get_by_auth_password(request.email, request.password)
+        except (InvalidPasswordError, InvalidAuthIdError):
+            raise endpoints.ForbiddenException('NAW GET OUT')
+        token, ts = User.create_auth_token(user.key.id())
 
     @endpoints.method(message_types.VoidMessage,
                       AdmissionsOfficer.ProtoCollection(),
