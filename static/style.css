@@ -85,7 +85,7 @@ h5,
 h6 {
     color: #444;
     font-weight: 600;
-    line-height: 1.5;
+    line-height: 1.15;
     margin: 0 0 30px 0;
     font-family: 'Raleway', sans-serif;
 }
@@ -105,7 +105,7 @@ h5 { font-size: 14px; }
 
 h6 { font-size: 12px; }
 
-h4 { font-weight: 600; }
+h4 { font-weight: 300; }
 
 h5,
 h6 { font-weight: bold; }
@@ -1034,7 +1034,7 @@ body.stretched #header.full-header .container {
 }
 
 #primary-menu > ul > li:hover a,
-#primary-menu > ul > li.current a { color: #1ABC9C; }
+#primary-menu > ul > li.current a { color: #3DB87A; }
 
 #primary-menu > ul > li.sub-menu > a > div { }
 
