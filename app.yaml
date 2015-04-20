@@ -16,6 +16,18 @@ handlers:
   static_files: officerList.html
   upload: officerList\.html
 
+- url: /login
+  static_files: login.html
+  upload: login\.html
+
+- url: /signup
+  static_files: signup.html
+  upload: signup\.html
+
+- url: /home
+  static_files: home.html
+  upload: home\.html
+
 - url: /controllers
   static_dir: controllers
 

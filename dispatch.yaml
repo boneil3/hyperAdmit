@@ -1,0 +1,13 @@
+application: centralparkedu
+
+dispatch:
+
+  - url: "*/_ah/spi/*"
+    module: default
+
+  - url: "*/hyperadmit/*"
+    module: default
+
+  - url: "*/api/*"
+    module: api
+

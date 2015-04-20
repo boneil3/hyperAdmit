@@ -10,10 +10,7 @@ from protorpc import message_types
 from protorpc import remote
 from models import AdmissionsOfficer
 from models import User
-
-USER_AUTH_RC = endpoints.ResourceContainer(message_types.VoidMessage,
-                                           email=ndb.StringProperty(1, required=True),
-                                           password=ndb.StringProperty(2, required=True))
+from utils import *
 
 
 @endpoints.api(name='hyperadmit', version='v1',
@@ -49,21 +46,37 @@ class HyperAdmit(remote.Service):
             raise endpoints.NotFoundException('MyModel not found.')
         return ad_off
 
-    @AdmissionsOfficer.method(path='insertadoff', http_method='POST', name='insert_ad_off')
+    @AdmissionsOfficer.method(request_fields=('email', 'last_name', 'first_name', 'phone'),
+                              path='insertadoff', http_method='POST', name='insert_ad_off')
     def insert_ad_off(self, ad_off):
-        if not ad_off.from_datastore:
-            raise endpoints.NotFoundException
-        new_ad_off = AdmissionsOfficer(verified=ad_off.verified, school=ad_off.school, school_type=ad_off.school_type,
+        if ad_off.from_datastore:
+            raise endpoints.NotFoundException('BLAH')
+        ad_off.school = 'UPenn'
+        ad_off.school_type = 'Undergrad'
+        ad_off.location = 'NYC'
+        ad_off.hours_consulted = 0
+        ad_off.knowledge_areas = ['Resume', 'Essays']
+        ad_off.whoami = 'Im The BEST!'
+        ad_off.howcanihelp = 'Being Awesome'
+        ad_off.job_title = 'Admissions Director'
+        ad_off.college_rank = 'Top 40'
+        ad_off.alias = ad_off.email
+        new_ad_off = AdmissionsOfficer(email=ad_off.email, first_name=ad_off.first_name, last_name=ad_off.last_name,
+                                       phone=ad_off.phone,
+                                       verified=ad_off.verified, school=ad_off.school, school_type=ad_off.school_type,
                                        location=ad_off.location, rating=ad_off.rating,
-                                       hours_consulted=ad_off.hours_consulted, last_active=ad_off.last_active,
+                                       hours_consulted=ad_off.hours_consulted,
                                        knowledge_areas=ad_off.knowledge_areas, whoami=ad_off.whoami,
                                        job_title=ad_off.job_title, howcanihelp=ad_off.howcanihelp,
-                                       college_rank=ad_off.college_rank)
+                                       college_rank=ad_off.college_rank, alias=ad_off.alias)
+
         ret_ad_off_key = new_ad_off.put()
         ret_ad_off = ret_ad_off_key.get()
         return ret_ad_off
 
-    @AdmissionsOfficer.query_method(query_fields=('pageToken', 'school_type', 'college_rank'),
-                                    path='getadoff', http_method='GET', name='get_ad_off_list')
+    @AdmissionsOfficer.query_method(user_required=False,
+                                    query_fields=('school_type', 'college_rank', 'limit', 'order', 'pageToken'),
+                                    path='getadoff', name='get_ad_off_list')
     def get_ad_off_list(self, query):
+
         return query

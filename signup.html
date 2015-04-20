@@ -1,0 +1,64 @@
+
+    <div>
+
+        <section>
+
+            <div class="container clearfix">
+
+                <div class="heading-block center topmargin nobottomborder">
+                    <h1>Don't have an Account? Register Now.</h1>
+                </div>
+
+            </div>
+
+            <div class="container clearfix">
+
+                    <form id="register-form" name="register-form" class="form" method="post">
+
+                        <div class="col_half">
+                            <label for="register-form-firstname"></label>
+                            <input type="text" ng-model="user.first_name" id="register-form-firstname" name="register-form-firstname" value="" placeholder="First Name" class="form-control input not-dark" />
+                        </div>
+
+                        <div class="col_half col_last">
+                            <label for="register-form-lastname"></label>
+                            <input type="text" ng-model="user.last_name" id="register-form-lastname" name="register-form-lastname" value="" placeholder="Last Name" class="form-control input not-dark" />
+                        </div>
+
+                        <div class="clear"></div>
+
+                        <div class="col_half">
+                            <label for="register-form-email"></label>
+                            <input type="text" ng-model="user.email" id="register-form-email" name="register-form-email" value="" placeholder="Email Address" class="form-control input not-dark" />
+                        </div>
+
+                        <div class="col_half col_last">
+                            <label for="register-form-phone"></label>
+                            <input type="text" ng-model="user.phone" id="register-form-phone" name="register-form-phone" value="" placeholder="Phone" class="form-control input not-dark" />
+                        </div>
+
+                        <div class="clear"></div>
+
+                        <div class="col_half">
+                            <label for="register-form-password"></label>
+                            <input type="password" ng-model="user.password" id="register-form-password" name="register-form-password" value="" placeholder="Password" class="form-control input not-dark" />
+                        </div>
+
+                        <div class="col_half col_last">
+                            <label for="register-form-repassword"></label>
+                            <input type="password" id="register-form-repassword" name="register-form-repassword" value="" placeholder="Confirm Password" class="form-control input not-dark" />
+                        </div>
+
+                        <div class="clear"></div>
+
+                        <div class="center topmargin-sm bottommargin-sm">
+                            <button ng-click="signup(user)" class="button button-large button-3d button-rounded nomargin" id="register-form-submit" name="register-form-submit" value="register">Register</button>
+                        </div>
+
+                    </form>
+
+            </div>
+
+        </section>
+
+    </div>
