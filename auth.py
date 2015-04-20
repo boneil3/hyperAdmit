@@ -131,6 +131,7 @@ class SignupHandler(BaseHandler):
 
         del user_dict['created']
         del user_dict['updated']
+        del user_dict['joined']
         print user_dict
 
 
