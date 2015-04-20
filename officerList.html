@@ -30,7 +30,7 @@
                         </ul>
 
                         <ul>
-                            <a href="index.html" class="button button-rounded button-border"><span>Log Out</span></a>
+                            <button ng-click="logout(user)" class="button button-rounded button-border"><span>Log Out</span></button>
                         </ul>
 
                     </nav><!-- #primary-menu end -->
@@ -48,7 +48,7 @@
                         <h2>Browse Admissions Officers on HyperAdmit</h2><br>
                         <label class="label label-info">{{ vm.dropdownSelected[0] }}</label>
                         <label class="label label-info">{{ vm.dropdownSelected[1] }}</label>
-                        <label class="label label-info">{{ vm.dropdownSelected[2] }}</label>
+                        <!--<label class="label label-info">{{ vm.dropdownSelected[2] }}</label> -->
                     </div>
                 </div>
 
@@ -103,9 +103,12 @@
                                 How I Can Help<br>
                                 <span>{{ ad_off.howcanihelp }}</span>
                             </div>
+                            <div>
+                                <button ng-click="vm.addAppt(user)">Add Appointment!</button>
+                            </div>
                         </accordion-group>
                     </accordion>
-                    
+                    <!--
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -208,7 +211,7 @@
                     </div>
                     
                 </div>
-                <input type="text" ng-model="email"/><button type="button" ng-click="vm.addAdOff(email)">Add AO</button>
-                <button type="button" ng-click="vm.get_more_adoffs()">Get AOs</button>
+                input type="text" ng-model="email"/><button type="button" ng-click="vm.addAdOff(email)">Add AO</button>
+                <button type="button" ng-click="vm.get_more_adoffs()">Get AOs</button> -->
             </div>
-
+</div>

@@ -130,7 +130,6 @@ class SignupHandler(BaseHandler):
         user_dict['email'] = email
 
         del user_dict['created']
-        del user_dict['updated']
         del user_dict['joined']
         print user_dict
 
@@ -173,11 +172,12 @@ class LoginHandler(BaseHandler):
             # Merge both objects: auth user object and custom user model
             user_dict = user.to_dict()
             del user_dict['created']
+            del user_dict['joined']
             del user_dict['updated']
             results = dict(u.items() + user_dict.items())
 
             results['email'] = email
-
+            print(results)
             self.send_response(self.RESPONSE_CODE_200, "", results)
 
         except (InvalidAuthIdError, InvalidPasswordError) as e:

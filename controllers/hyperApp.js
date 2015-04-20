@@ -30,20 +30,20 @@ hyperApp.config(['$routeProvider', function ($routeProvider) {
         });
 }]);
 hyperApp.factory('AdmissionsOfficer', ['$resource', function ($resource) {
-    var AdmissionsOfficer = $resource('http://localhost:8080/_ah/api/centralparkedu/v1/hyperadmit/adoffs/:id', {id: '@id'}, {
+    var AdmissionsOfficer = $resource('https://centralparkedu.appspot.com/_ah/api/centralparkedu/v1/hyperadmit/adoffs/:id', {id: '@id'}, {
         'get': {method: 'GET'},
         'update': {method: 'POST'}
     });
-    AdmissionsOfficer.add = $resource('http://localhost:8080/_ah/api/centralparkedu/v1/hyperadmit/insertadoff', {}, {
+    AdmissionsOfficer.add = $resource('https://centralparkedu.appspot.com/_ah/api/centralparkedu/v1/hyperadmit/insertadoff', {}, {
         'insert': {method: 'POST'}
     });
-    AdmissionsOfficer.list = $resource('http://localhost:8080/_ah/api/centralparkedu/v1/hyperadmit/getadoffs', {pageToken: '@pageToken'}, {
+    AdmissionsOfficer.list = $resource('https://centralparkedu.appspot.com/_ah/api/centralparkedu/v1/hyperadmit/getadoffs', {pageToken: '@pageToken'}, {
         'query': {method: 'GET', isArray: false}
     });
     return AdmissionsOfficer
 }]);
 
-hyperApp.controller('adOffCtrl', ['$scope', '$window', '$timeout', 'GApi', 'AdmissionsOfficer', 'sessionService', function ($scope, $window, $timeout, GApi, AdmissionsOfficer, sessionService) {
+hyperApp.controller('adOffCtrl', ['$location', '$scope', '$window', '$timeout', 'GApi', 'AdmissionsOfficer', 'sessionService', 'logoutService', function ($location, $scope, $window, $timeout, GApi, AdmissionsOfficer, sessionService, logoutService) {
     var vm = this;
         vm.ad_offs = [];
         vm.lastPageToken = '';
@@ -206,6 +206,12 @@ hyperApp.controller('adOffCtrl', ['$scope', '$window', '$timeout', 'GApi', 'Admi
             }
         });
     };
+    $scope.logout = function (user) {
+        logoutService.logout(user, $scope);
+    };
+    vm.addAppt = function (user) {
+        $location.path('/checkout');
+    };
 }]);
 
 hyperApp.factory('crypto', function () {
@@ -229,7 +235,7 @@ hyperApp.factory('sessionService', ['$http', function ($http) {
   };
 }]);
 hyperApp.run(['$window', 'GApi', '$rootScope', '$location', 'loginService', function ($window, GApi, $rootScope, $location, loginService) {
-    var base = 'http://localhost:8080/_ah/api/';
+    var base = 'https://centralparkedu.appspot.com/_ah/api/';
     GApi.load('centralparkedu', 'v1', base);
     GApi.load('plus', 'v1');
     GApi.load('oauth2', 'v2');

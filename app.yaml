@@ -28,6 +28,10 @@ handlers:
   static_files: home.html
   upload: home\.html
 
+- url: /checkout
+  static_files: checkout.html
+  upload: checkout\.html
+
 - url: /controllers
   static_dir: controllers
 

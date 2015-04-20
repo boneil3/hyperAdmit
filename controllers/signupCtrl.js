@@ -41,7 +41,7 @@ hyperApp.factory('signupService', function ($http, $window, $timeout, $location,
             if (msg.data.code == 200) {
                 sessionService.set('token', msg.data.response.token);
                 sessionService.set('user_id', msg.data.response.user_id);
-                $location.path('/login');
+                $location.path('/officers');
             }
             else if (msg.data.code >= 400) {
                 user.email = 'email_taken@sod.com';
