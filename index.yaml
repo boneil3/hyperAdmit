@@ -21,3 +21,9 @@ indexes:
   properties:
   - name: created
     direction: desc
+
+- kind: AdmissionsOfficer
+  properties:
+  - name: school_type
+  - name: created
+    direction: desc

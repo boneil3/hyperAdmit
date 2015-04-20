@@ -30,14 +30,14 @@ hyperApp.config(['$routeProvider', function ($routeProvider) {
         });
 }]);
 hyperApp.factory('AdmissionsOfficer', ['$resource', function ($resource) {
-    var AdmissionsOfficer = $resource('http://localhost:8080/_ah/api/hyperadmit/v1/adoffs/:id', {id: '@id'}, {
+    var AdmissionsOfficer = $resource('http://localhost:8080/_ah/api/centralparkedu/v1/hyperadmit/adoffs/:id', {id: '@id'}, {
         'get': {method: 'GET'},
         'update': {method: 'POST'}
     });
-    AdmissionsOfficer.add = $resource('http://localhost:8080/_ah/api/hyperadmit/v1/insertadoff', {}, {
+    AdmissionsOfficer.add = $resource('http://localhost:8080/_ah/api/centralparkedu/v1/hyperadmit/insertadoff', {}, {
         'insert': {method: 'POST'}
     });
-    AdmissionsOfficer.list = $resource('http://localhost:8080/_ah/api/hyperadmit/v1/getadoffs', {pageToken: '@pageToken'}, {
+    AdmissionsOfficer.list = $resource('http://localhost:8080/_ah/api/centralparkedu/v1/hyperadmit/getadoffs', {pageToken: '@pageToken'}, {
         'query': {method: 'GET', isArray: false}
     });
     return AdmissionsOfficer
@@ -91,10 +91,12 @@ hyperApp.controller('adOffCtrl', ['$scope', '$window', '$timeout', 'GApi', 'Admi
             vm.alerts.push(alert);
 
             vm.dropdownSelected[ddNum] = item;
-            AdmissionsOfficer.list.query({
+            GApi.execute('centralparkedu', 'hyperadmit.get_all_addOffs', {
+                'user_id': sessionService.get('user_id'),
+                'user_token': sessionService.get('token'),
                 'school_type': vm.dropdownSelected[0],
                 'college_rank': vm.dropdownSelected[1]
-            }, function (response) {
+            }).then(function (response) {
                 if (response.code >= 400) {
                     //error
                 }

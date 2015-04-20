@@ -41,15 +41,14 @@ hyperApp.factory('signupService', function ($http, $window, $timeout, $location,
             if (msg.data.code == 200) {
                 sessionService.set('token', msg.data.response.token);
                 sessionService.set('user_id', msg.data.response.user_id);
-                $location.path('/home');
+                $location.path('/login');
             }
             else if (msg.data.code >= 400) {
-                user.email = 'nope@sod.com';
+                user.email = 'email_taken@sod.com';
                 sessionService.destroy('token');
                 sessionService.destroy('user_id');
             }
             else {
-                //$window.location.replace('https://www.sandboxx.us/error/401.html');
                 sessionService.destroy('token');
                 sessionService.destroy('user_id');
             }

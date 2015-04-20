@@ -44,7 +44,27 @@ class HyperAdmit(remote.Service):
         if request.last_cursor:
             cursor = ndb.Cursor.from_websafe_string(request.last_cursor)
 
-        ad_off_query = AdmissionsOfficer.query().order(-AdmissionsOfficer.created, AdmissionsOfficer.key)
+        school_type = None
+        if request.school_type:
+            school_type = request.school_type
+
+        college_rank = None
+        if request.college_rank:
+            college_rank = request.college_rank
+
+        if school_type and college_rank:
+            ad_off_query = AdmissionsOfficer.query(AdmissionsOfficer.college_rank == college_rank,
+                                                   AdmissionsOfficer.school_type == school_type).order(-AdmissionsOfficer.created,
+                                                                                                       AdmissionsOfficer.key)
+        elif school_type and not college_rank:
+            ad_off_query = AdmissionsOfficer.query(AdmissionsOfficer.school_type == school_type).order(-AdmissionsOfficer.created,
+                                                                                                       AdmissionsOfficer.key)
+        elif not school_type and college_rank:
+            ad_off_query = AdmissionsOfficer.query(AdmissionsOfficer.college_rank == college_rank).order(-AdmissionsOfficer.created,
+                                                                                                         AdmissionsOfficer.key)
+        else:
+            ad_off_query = AdmissionsOfficer.query().order(-AdmissionsOfficer.created, AdmissionsOfficer.key)
+
         ad_offs, next_cursor, more = ad_off_query.fetch_page(10, start_cursor=cursor)
 
         ret_ad_off = AdmissionsOfficer.ToMessageCollection(ad_offs, next_cursor=next_cursor)
