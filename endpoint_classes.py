@@ -13,9 +13,12 @@ from models import User
 from utils import *
 
 
-@endpoints.api(name='hyperadmit', version='v1',
-               allowed_client_ids=[endpoints.API_EXPLORER_CLIENT_ID],
-               scopes=[endpoints.EMAIL_SCOPE])
+centralparkedu = endpoints.api(name='centralparkedu', version='v1',
+                               allowed_client_ids=[endpoints.API_EXPLORER_CLIENT_ID],
+                               scopes=[endpoints.EMAIL_SCOPE])
+
+
+@centralparkedu.api_class(resource_name='hyperadmit', path='hyperadmit')
 class HyperAdmit(remote.Service):
     """ HyperAdmit API v1 """
 
@@ -29,13 +32,23 @@ class HyperAdmit(remote.Service):
             raise endpoints.ForbiddenException('NAW GET OUT')
         token, ts = User.create_auth_token(user.key.id())
 
-    @endpoints.method(message_types.VoidMessage,
+    @endpoints.method(USER_RC,
                       AdmissionsOfficer.ProtoCollection(),
                       path='getalladdOffs', http_method='POST', name='get_all_addOffs')
     def get_all_adOffs(self, request):
-        query = AdmissionsOfficer.query()
-        ad_offs = query.fetch()
-        return AdmissionsOfficer.ToMessageCollection(ad_offs)
+        user, ts = User.get_by_auth_token(int(request.user_id), request.user_token)
+        if user is None:
+            raise endpoints.ForbiddenException('User auth failed')
+
+        cursor = None
+        if request.last_cursor:
+            cursor = ndb.Cursor.from_websafe_string(request.last_cursor)
+
+        ad_off_query = AdmissionsOfficer.query().order(-AdmissionsOfficer.created, AdmissionsOfficer.key)
+        ad_offs, next_cursor, more = ad_off_query.fetch_page(10, start_cursor=cursor)
+
+        ret_ad_off = AdmissionsOfficer.ToMessageCollection(ad_offs, next_cursor=next_cursor)
+        return ret_ad_off
 
     # Ad Off methods
     @AdmissionsOfficer.method(request_fields=('id',),
@@ -76,7 +89,7 @@ class HyperAdmit(remote.Service):
 
     @AdmissionsOfficer.query_method(user_required=False,
                                     query_fields=('school_type', 'college_rank', 'limit', 'order', 'pageToken'),
-                                    path='getadoff', name='get_ad_off_list')
+                                    path='getadoffs', name='get_ad_off_list')
     def get_ad_off_list(self, query):
 
         return query

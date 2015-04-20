@@ -46,7 +46,9 @@
                     <div class="heading-block nobottomborder">
 
                         <h2>Browse Admissions Officers on HyperAdmit</h2><br>
-                        <alert ng-repeat="alert in vm.alerts" type="{{ alert.type }}" close="vm.closeAlert($index)">{{ alert.msg }}</alert>
+                        <label class="label label-info">{{ vm.dropdownSelected[0] }}</label>
+                        <label class="label label-info">{{ vm.dropdownSelected[1] }}</label>
+                        <label class="label label-info">{{ vm.dropdownSelected[2] }}</label>
                     </div>
                 </div>
 
@@ -93,12 +95,12 @@
                             </div>
 
                             <div>
-                                Who am I?
+                                Who am I?<br>
                                 <span>{{ ad_off.whoami }}</span>
                             </div>
                             <div class="line"></div>
                             <div>
-                                How I Can Help
+                                How I Can Help<br>
                                 <span>{{ ad_off.howcanihelp }}</span>
                             </div>
                         </accordion-group>
@@ -207,5 +209,6 @@
                     
                 </div>
                 <input type="text" ng-model="email"/><button type="button" ng-click="vm.addAdOff(email)">Add AO</button>
+                <button type="button" ng-click="vm.get_more_adoffs()">Get AOs</button>
             </div>
 

@@ -19,7 +19,5 @@ indexes:
 
 - kind: AdmissionsOfficer
   properties:
-  - name: college_rank
-  - name: school_type
-  - name: joined
+  - name: created
     direction: desc

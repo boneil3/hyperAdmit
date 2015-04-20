@@ -29,58 +29,59 @@ hyperApp.config(['$routeProvider', function ($routeProvider) {
             redirectTo: '/home'
         });
 }]);
-hyperApp.factory('AdmissionOfficer', ['$resource', function ($resource) {
-    var AdmissionOfficer = $resource('http://localhost:8080/_ah/api/hyperadmit/v1/adoffs/:id', {id: '@id'}, {
+hyperApp.factory('AdmissionsOfficer', ['$resource', function ($resource) {
+    var AdmissionsOfficer = $resource('http://localhost:8080/_ah/api/hyperadmit/v1/adoffs/:id', {id: '@id'}, {
         'get': {method: 'GET'},
         'update': {method: 'POST'}
     });
-    AdmissionOfficer.add = $resource('http://localhost:8080/_ah/api/hyperadmit/v1/insertadoff', {}, {
+    AdmissionsOfficer.add = $resource('http://localhost:8080/_ah/api/hyperadmit/v1/insertadoff', {}, {
         'insert': {method: 'POST'}
     });
-    AdmissionOfficer.list = $resource('http://localhost:8080/_ah/api/hyperadmit/v1/getadoff', {pageToken: '@pageToken'}, {
+    AdmissionsOfficer.list = $resource('http://localhost:8080/_ah/api/hyperadmit/v1/getadoffs', {pageToken: '@pageToken'}, {
         'query': {method: 'GET', isArray: false}
     });
-    return AdmissionOfficer
+    return AdmissionsOfficer
 }]);
 
-hyperApp.controller('adOffCtrl', ['$scope', '$window', '$timeout', 'GApi', 'AdmissionOfficer', function ($scope, $window, $timeout, GApi, AdmissionOfficer) {
+hyperApp.controller('adOffCtrl', ['$scope', '$window', '$timeout', 'GApi', 'AdmissionsOfficer', 'sessionService', function ($scope, $window, $timeout, GApi, AdmissionsOfficer, sessionService) {
     var vm = this;
         vm.ad_offs = [];
         vm.lastPageToken = '';
         vm.dropOne = ['Undergrad', 'Business', 'Law', 'Medical'];
         vm.dropTwo = ['Ivy', 'Top 20', 'Top 40'];
         vm.dropThree = ['@fat', '@mdo'];
-        vm.dropdownSelected = ['', 'Top 40', ''];
+        vm.dropdownSelected = ['', '', ''];
         vm.alerts = [];
 
-    $timeout(function() {
-        AdmissionOfficer.list.query({order: '-joined', pageToken: ''}, function (response) {
-            if (response.code >= 400) {
-                //error
-            }
-            else {
-                angular.forEach(response.items, function (item) {
-                    var ad_off = new AdmissionOfficer();
-                        ad_off.college_rank = item.college_rank;
-                        ad_off.hours_consulted = item.hours_consulted;
-                        ad_off.howcanihelp = item.howcanihelp;
-                        ad_off.whoami = item.whoami;
-                        ad_off.job_title = item.job_title;
-                        ad_off.knowledge_areas = item.knowledge_areas;
-                        ad_off.last_active = item.last_active;
-                        ad_off.location = item.location;
-                        ad_off.school = item.school;
-                        ad_off.school_type = item.school_type;
-                        ad_off.verified = item.verified;
-                        ad_off.whoami = item.whoami;
-                    vm.ad_offs.push(ad_off);
-                });
-                $timeout(function() {
-                    vm.lastPageToken = response.nextPageToken;
-                }, 100);
-            }
-        });
-    }, 3000);
+    GApi.execute('centralparkedu', 'hyperadmit.get_all_addOffs', {
+        'user_id': sessionService.get('user_id'),
+        'user_token': sessionService.get('token')
+    }).then(function (response) {
+        if (response.code >= 400) {
+            //error
+        }
+        else {
+            angular.forEach(response.items, function (item) {
+                var ad_off = new AdmissionsOfficer();
+                ad_off.college_rank = item.college_rank;
+                ad_off.hours_consulted = item.hours_consulted;
+                ad_off.howcanihelp = item.howcanihelp;
+                ad_off.whoami = item.whoami;
+                ad_off.job_title = item.job_title;
+                ad_off.knowledge_areas = item.knowledge_areas;
+                ad_off.last_active = item.last_active;
+                ad_off.location = item.location;
+                ad_off.school = item.school;
+                ad_off.school_type = item.school_type;
+                ad_off.verified = item.verified;
+                ad_off.alias = item.alias;
+                vm.ad_offs.push(ad_off);
+            });
+            $timeout(function() {
+                vm.lastPageToken = response.nextPageToken;
+            }, 100);
+        }
+    });
 
     vm.dropdownSelect = function (item, ddNum) {
         if (vm.dropdownSelected[ddNum] != item) {
@@ -90,7 +91,7 @@ hyperApp.controller('adOffCtrl', ['$scope', '$window', '$timeout', 'GApi', 'Admi
             vm.alerts.push(alert);
 
             vm.dropdownSelected[ddNum] = item;
-            AdmissionOfficer.list.query({
+            AdmissionsOfficer.list.query({
                 'school_type': vm.dropdownSelected[0],
                 'college_rank': vm.dropdownSelected[1]
             }, function (response) {
@@ -100,7 +101,7 @@ hyperApp.controller('adOffCtrl', ['$scope', '$window', '$timeout', 'GApi', 'Admi
                 else {
                     vm.ad_offs = [];
                     angular.forEach(response.items, function (item) {
-                        var ad = new AdmissionOfficer();
+                        var ad = new AdmissionsOfficer();
                             ad.id = item.id;
                             ad.alias = item.alias;
                             ad.school = item.school;
@@ -123,13 +124,17 @@ hyperApp.controller('adOffCtrl', ['$scope', '$window', '$timeout', 'GApi', 'Admi
     };
 
     vm.get_more_adoffs = function() {
-        AdmissionOfficer.list.query({'pageToken': vm.lastPageToken}, function (response) {
+        GApi.execute('centralparkedu', 'hyperadmit.get_all_addOffs', {
+            'user_id': sessionService.get('user_id'),
+            'user_token': sessionService.get('token'),
+            'pageToken': vm.lastPageToken
+            }).then(function (response) {
             if (response.code >= 400) {
             //error
             }
             else {
                 angular.forEach(response.items, function (item) {
-                    var ad_off = new AdmissionOfficer();
+                    var ad_off = new AdmissionsOfficer();
                         ad_off.college_rank = item.college_rank;
                         ad_off.hours_consulted = item.hours_consulted;
                         ad_off.howcanihelp = item.howcanihelp;
@@ -151,11 +156,11 @@ hyperApp.controller('adOffCtrl', ['$scope', '$window', '$timeout', 'GApi', 'Admi
         });
     };
     vm.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
+        vm.alerts.splice(index, 1);
     };
     vm.addAdOff = function (email) {
         var now = moment().format('YYYY-MM-DDTHH:mm:ss');
-        AdmissionOfficer.add.insert({
+        AdmissionsOfficer.add.insert({
             'email': email,
             'first_name': 'bob',
             'last_name': 'whatever',
@@ -172,13 +177,13 @@ hyperApp.controller('adOffCtrl', ['$scope', '$window', '$timeout', 'GApi', 'Admi
             'whoami': '',
             'howcanihelp': '',
             'job_title': '',
-            'college_rank': 0
+            'college_rank': 'Top 40'
         }, function (response) {
             if (response.code >= 400) {
                 // error
             }
             else {
-                var adOff = new AdmissionOfficer();
+                var adOff = new AdmissionsOfficer();
                     adOff.id = response.id;
                     adOff.verified = response.verified;
                     adOff.school = response.school;
@@ -222,13 +227,13 @@ hyperApp.factory('sessionService', ['$http', function ($http) {
   };
 }]);
 hyperApp.run(['$window', 'GApi', '$rootScope', '$location', 'loginService', function ($window, GApi, $rootScope, $location, loginService) {
-    var base = 'https://centralparkedu.appspot.com/_ah/api/';
-    GApi.load('hyperadmit', 'v1', base);
+    var base = 'http://localhost:8080/_ah/api/';
+    GApi.load('centralparkedu', 'v1', base);
     GApi.load('plus', 'v1');
     GApi.load('oauth2', 'v2');
 
     $rootScope.$on('$routeChangeStart', function () {
-        if ($location.path() !== '/login' && !loginService.isLogged() && $location.path() !== '/signup' && $location.path() !== '/reset') {
+        if ($location.path() !== '/login' && !loginService.isLogged() && $location.path() !== '/signup' && $location.path() !== '/reset' && $location.path() !== '/home') {
             $location.path('/home');
         }
     });

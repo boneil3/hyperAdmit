@@ -48,7 +48,7 @@ class User(EndpointsModel, webapp2_extras.appengine.auth.models.User):
     @EndpointsAliasProperty(setter=id_setter, required=True)
     def id(self):
         if self.key is not None:
-            return self.key.id()
+            return str(self.key.id())
 
     def set_password(self, raw_password):
         """Sets the password for the current user
@@ -78,7 +78,7 @@ class User(EndpointsModel, webapp2_extras.appengine.auth.models.User):
 
         if valid_token and user:
             timestamp = int(time.mktime(valid_token.created.timetuple()))
-            if user.force_login:
+            if hasattr(user, 'force_login'):
                 user.force_login = False
                 user.put()
                 return None, None
@@ -104,7 +104,7 @@ class AdmissionsOfficer(EndpointsModel, webapp2_extras.appengine.auth.models.Use
     _message_fields_schema = ('id', 'verified', 'school', 'school_type', 'location', 'rating', 'alias',
                               'hours_consulted',
                               'last_active', 'knowledge_areas', 'whoami', 'job_title', 'howcanihelp', 'college_rank')
-    joined = EndpointsDateTimeProperty(auto_now=True)
+
     email = ndb.StringProperty(required=True)
     first_name = ndb.StringProperty(required=True)
     last_name = ndb.StringProperty(required=True)
@@ -125,17 +125,16 @@ class AdmissionsOfficer(EndpointsModel, webapp2_extras.appengine.auth.models.Use
     howcanihelp = ndb.StringProperty(default='')
     job_title = ndb.StringProperty(default='')
     college_rank = ndb.StringProperty(default='Top 40')
-    joined = EndpointsDateTimeProperty(auto_now_add=True)
 
     def id_setter(self, value):
         # Allocate IDs if DNE
         if value == '' or value is None or value == 'None':
-            first, last = User.allocate_ids(2)
-            self.UpdateFromKey(ndb.Key('AdmissionsOfficer', str(first)))
+            first, last = AdmissionsOfficer.allocate_ids(2)
+            self.UpdateFromKey(ndb.Key('AdmissionsOfficer', first))
         elif not isinstance(value, basestring) and not isinstance(value, int):
             raise endpoints.BadRequestException('ID not string or int')
         else:
-            self.UpdateFromKey(ndb.Key('AdmissionsOfficer', str(value)))
+            self.UpdateFromKey(ndb.Key('AdmissionsOfficer', value))
 
     @EndpointsAliasProperty(setter=id_setter, required=True)
     def id(self):
