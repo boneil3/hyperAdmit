@@ -24,8 +24,11 @@
 
     <!-- External JavaScripts
     ============================================= -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript" src="static/js/jquery.js"></script>
     <script type="text/javascript" src="static/js/plugins.js"></script>
+    <script src="static/jquery.payment.js"></script>
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
     <!-- Document Title
     ============================================= -->
@@ -147,7 +150,7 @@
                         <div class="container clearfix">
 
                                 <div class="heading-block topmargin bottommargin nobottomborder">
-                                    <h2>Additional Information</h2>
+                                    <h2>Additional Information (Optional)</h2>
                                 </div>
 
                                 <p>* List the most important questions that you have.<br> * when it comes to the admissions process, where do you need the most help? <br>* What is your dream school?</p>
@@ -159,39 +162,161 @@
                             </div>
                         </div>
 
+                        <div>
+
                         <div class="container clearfix">
 
                                 <div class="heading-block topmargin bottommargin nobottomborder">
                                     <h2>Payment Information <i class="icon-lock3"></i></h2>
                                 </div>
 
-                                <form id="register-form" name="register-form" action="#" method="post">
+                                <form action="/submitcontributionwithstripe" method="POST" id="payment-form" novalidate autocomplete="on" class="form-horizontal">
+                                  <p><span class="text-error" style="text-align:center;"><span class="payment-errors"></span></span></p>
 
-                                        <input type="text" id="register-form-name" name="register-form-name" value="" placeholder="Name on card" class="form-control input not-dark" />
+                                  <div class="control-group">
+                                    <div class="controls">
+                                        <input type="text" class="input-large" id="contributorname" placeholder="Full Name" name="contributorname" maxlength="50" required />
+                                    </div>
+                                  </div>
 
-                                        <br>
+                                  <br>
 
-                                        <input type="text" id="register-form-email" name="register-form-email" value="" placeholder="Card number" class="form-control input not-dark" />
+                                  <div class="control-group">
+                                    <div class="controls">
+                                        <input type="text" class="input-large cc-number" pattern="\d*" x-autocompletetype="cc-number" maxlength="20" placeholder="Card Number" data-stripe="number" required/>
+                                    </div>
+                                  </div>
 
-                                        <br>
+                                  <br>
 
-                                        <div class="col_one_sixth">
-                                            <input type="text" id="register-form-username" name="register-form-username" value="" placeholder="MM" class="form-control input not-dark" />
+                                  <div class="control-group">
+                                    <div class="controls">
+                                        <input type="text" class="input-mini cc-cvc" pattern="\d*" x-autocompletetype="cc-csc" autocomplete="off" maxlength="4" placeholder="CVC" data-stripe="cvc" required/>
+                                    </div>
+                                  </div>
+
+                                  <br>
+
+                                  <div class="control-group">
+                                    <label class="control-label">
+                                        <span>Expiration (MM/YYYY)</span>
+                                    </label>
+                                    <div class="controls">
+                                        <input type="text" class="input-mini cc-exp-month" data-numeric maxlength="2" placeholder="MM" data-stripe="exp-month" required/><span> / </span><input type="text" placeholder="YYYY" class="input-small cc-exp-year" data-numeric maxlength="4" data-stripe="exp-year" required/>
+                                    </div>
+                                  </div>
+
+                                  <br>
+
+                                  <div class="control-group">
+                                    <div class="controls">
+                                        <div class="input-prepend">
+                                            <span class="add-on">$</span><input type="text" class="input-mini" id="contributionamount" placeholder="Amount" name="contributionamount" maxlength="7" data-numeric required/>
                                         </div>
+                                    </div>
+                                  </div>
 
-                                        <div class="col_one_sixth col_last">
-                                            <input type="text" id="register-form-phone" name="register-form-phone" placeholder="YYYY" value="" class="form-control input not-dark" />
-                                        </div>
-
-                                        <br>
-
-                                        <div class="col_full">
-                                            <input type="password" id="register-form-password" name="register-form-password" value="" placeholder="CVC" class="form-control input not-dark" />
-                                        </div>
-
-                                    <div class="clear"></div>
+                                  <div class="control-group">
+                                    <label class="control-label">
+                                        <span></span>
+                                    </label>
+                                    <div class="controls">
+                                        <button type="submit" class="btn btn-success">Submit Contribution</button>
+                                    </div>
+                                  </div>
 
                                 </form>
+
+
+                                <script>
+                                jQuery(function($) {
+                                  $('[data-numeric]').payment('restrictNumeric');
+                                  $('.cc-number').payment('formatCardNumber');
+                                  $('.cc-exp').payment('formatCardExpiry');
+                                  $('.cc-cvc').payment('formatCardCVC');
+
+                                  $.fn.toggleInputError = function(erred) {
+                                    this.parent('.form-group').toggleClass('has-error', erred);
+                                    return this;
+                                  };
+
+                                  $('form').submit(function(e) {
+                                    e.preventDefault();
+
+                                    var cardType = $.payment.cardType($('.cc-number').val());
+                                    $('.cc-number').toggleInputError(!$.payment.validateCardNumber($('.cc-number').val()));
+                                    $('.cc-exp').toggleInputError(!$.payment.validateCardExpiry($('.cc-exp').payment('cardExpiryVal')));
+                                    $('.cc-cvc').toggleInputError(!$.payment.validateCardCVC($('.cc-cvc').val(), cardType));
+                                    $('.cc-brand').text(cardType);
+
+                                    $('.validation').removeClass('text-danger text-success');
+                                    $('.validation').addClass($('.has-error').length ? 'text-danger' : 'text-success');
+                                  });
+
+                                });
+                                </script>
+
+
+                                <script>
+                                    jQuery(function($) {
+                                        $('#payment-form').submit(function(event) {
+                                            var $form = $(this);
+                                            // See Step on validation of data, let's assume your input is valid
+                                            // Disable the submit button to prevent repeated clicks
+                                            $form.find('button').prop('disabled', true);
+                                            Stripe.createToken($form, stripeResponseHandler);
+                                            // Prevent the form from submitting with the default action
+                                            return false;
+                                        });
+                                    });
+                                </script>
+
+                                <script>
+                                    Stripe.setPublishableKey('pk_test_G1n6jybys1NZ7V9OjCuXilas');
+
+                                    var stripeResponseHandler = function(status, response) {
+                                      var $form = $('#payment-form');
+                                      if (response.error) {
+                                        // Show the errors on the form
+                                        $form.find('.payment-errors').text(response.error.message);
+                                        $form.find('button').prop('disabled', false);
+                                      } else {
+                                        // token contains id, last4, and card type
+                                        var token = response.id;
+                                        // Insert the token into the form so it gets submitted to the server
+                                        $form.append($('').val(token));
+                                        // and re-submit
+                                        $form.get(0).submit();
+                                      }
+                                    };
+                                </script>
+                                <!--                                 <form action="#" id="payment form" method="post" class="form-horizontal">
+
+                                                                        <input type="text" id="register-form-name" name="register-form-name" value="" placeholder="Name on card" class="form-control input not-dark" maxlength="50" required />
+
+                                                                        <br>
+
+                                                                        <input type="text" id="register-form-email" name="register-form-email" value="" placeholder="Card number" class="form-control input not-dark" />
+
+                                                                        <br>
+
+                                                                        <div class="col_one_sixth">
+                                                                            <input type="text" id="register-form-username" name="register-form-username" value="" placeholder="MM" class="form-control input not-dark" />
+                                                                        </div>
+
+                                                                        <div class="col_one_sixth col_last">
+                                                                            <input type="text" id="register-form-phone" name="register-form-phone" placeholder="YYYY" value="" class="form-control input not-dark" />
+                                                                        </div>
+
+                                                                        <br>
+
+                                                                        <div class="col_full">
+                                                                            <input type="password" id="register-form-password" name="register-form-password" value="" placeholder="CVC" class="form-control input not-dark" />
+                                                                        </div>
+
+                                                                    <div class="clear"></div>
+
+                                                                </form> -->
 
                         </div>
 
@@ -203,7 +328,7 @@
 
                                 <form id="register-form" name="register-form" action="#" method="post">
 
-                                        <input type="text" id="register-form-name" name="register-form-name" value="" placeholder="Billed to" class="form-control input not-dark" />
+                                        <input type="text" id="register-form-name" name="register-form-name" value="" placeholder="Billed to" maxlength="2" class="form-control input not-dark" />
 
                                         <br>
 
