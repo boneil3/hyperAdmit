@@ -227,11 +227,11 @@ hyperApp.run(['$window', 'GApi', '$rootScope', '$location', 'loginService', func
     GApi.load('plus', 'v1');
     GApi.load('oauth2', 'v2');
 
-    var routespermission = ['/index'];
+    var routespermission = ['/login'];
 
     $rootScope.$on('$routeChangeStart', function () {
         if (routespermission.indexOf($location.path()) !== 1 && !loginService.isLogged() && $location.path() !== '/signup' && $location.path() !== '/reset') {
-            $location.path('/login');
+            $location.path('/home');
         }
     });
 }]);
