@@ -25,6 +25,9 @@ hyperApp.config(['$routeProvider', function ($routeProvider) {
         .when('/home', {
             templateUrl: 'home'
         })
+        .when('/about', {
+            templateUrl: 'about'
+        })
         .otherwise({
             redirectTo: '/home'
         });
