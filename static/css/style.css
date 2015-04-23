@@ -10255,12 +10255,12 @@ label.error { display: none !important; }
 
 .emphasis-title h1,
 .emphasis-title h2 {
-    font-size: 64px;
+    font-size: 48px;
     letter-spacing: -2px;
 }
 
 .emphasis-title h1 strong,
-.emphasis-title h2 strong { font-weight: 700; }
+.emphasis-title h2 strong { font-weight: 400; }
 
 
 /* Justify Border Title

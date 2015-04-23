@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en-US">
+<html ng-app>
 <head>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -26,6 +26,7 @@
     ============================================= -->
     <script type="text/javascript" src="static/js/jquery.js"></script>
     <script type="text/javascript" src="static/js/plugins.js"></script>
+    <script type="text/javascript" src="static/js/angular.min.js"></script>
 
     <!-- Document Title
     ============================================= -->
@@ -36,8 +37,6 @@
 <body>
 
     <link rel="stylesheet" type="text/css" href="static/css/jquery.datetimepicker.css"/ >
-    <script src="static/js/jquery.js"></script>
-    <script src="static/js/jquery.datetimepicker.js"></script>
 
     <!-- Pill Wrapper
     ============================================= -->
@@ -48,6 +47,117 @@
 
                 <!-- Testionials
                 ============================================= -->  
+
+                <div class="clear notopmargin nobottommargin"></div><div class="line notopmargin nobottommargin"></div>
+
+
+                <!-- howItWorksSteps
+                ============================================= -->  
+
+
+                <div class="heading-block center topmargin bottommargin-lg">
+                    <h2>How HyperAdmit Works</h2>
+                    <span>Four easy steps to an appointment</span>
+                </div>
+
+                <div ng-controller="AccordionDemoCtrl">
+                  <p>
+                    <button class="btn btn-default btn-sm" ng-click="status.open = !status.open">Toggle last panel</button>
+                    <button class="btn btn-default btn-sm" ng-click="status.isFirstDisabled = ! status.isFirstDisabled">Enable / Disable first panel</button>
+                  </p>
+
+                  <label class="checkbox">
+                    <input type="checkbox" ng-model="oneAtATime">
+                    Open only one at a time
+                  </label>
+                  <accordion close-others="oneAtATime">
+                    <accordion-group heading="Static Header, initially expanded" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+                      This content is straight in the template.
+                    </accordion-group>
+                    <accordion-group heading="{{group.title}}" ng-repeat="group in groups">
+                      {{group.content}}
+                    </accordion-group>
+                    <accordion-group heading="Dynamic Body Content">
+                      <p>The body of the accordion group grows to fit the contents</p>
+                        <button class="btn btn-default btn-sm" ng-click="addItem()">Add Item</button>
+                        <div ng-repeat="item in items">{{item}}</div>
+                    </accordion-group>
+                    <accordion-group is-open="status.open">
+                        <accordion-heading>
+                            I can have markup, too! <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                        </accordion-heading>
+                        This is just some content to illustrate fancy headings.
+                    </accordion-group>
+                  </accordion>
+                </div>
+
+
+
+
+
+<!--                 <div class="col-sm-4 topmargin-sm">
+
+                    <div class="col_full">
+
+                        <img class="aligncenter" src="static/images/collegeadmissionsplatform.png" alt="college admissions platform">
+
+                    </div>
+
+                </div>
+
+                <div class="col-sm-4 topmargin-sm">
+
+                    <div class="container clearfix">
+
+                        <div class="col_one_sixth" align="center">
+                            <h4>1</h4>
+                        </div>
+
+                        <div class="col_five_sixth col_last">
+                            <h4>Sign up and schedule an appointment (first 20 minutes are free)</h4>
+                        </div>
+
+                    </div>
+
+                    <div class="container clearfix">
+
+                        <div class="col_one_sixth" align="center">
+                            <h4>2</h4>
+                        </div>
+
+                        <div class="col_five_sixth col_last">
+                            <h4>Get prepped for your call by the HyperAdmit team</h4>
+                        </div>
+
+                    </div>
+
+                    <div class="container clearfix">
+
+                        <div class="col_one_sixth" align="center">
+                            <h4>3</h4>
+                        </div>
+
+                        <div class="col_five_sixth col_last">
+                            <h4>Upload all your relevant materials (for example, personal statements)</h4>
+                        </div>
+
+                    </div>
+
+                    <div class="container clearfix">
+
+                        <div class="col_one_sixth" align="center">
+                            <h4>4</h4>
+                        </div>
+
+                        <div class="col_five_sixth col_last">
+                            <h4>Dial-in to your appointment and get your edge!</h4>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="clear"></div><div class="line notopmargin notoppadding nobottommargin"></div>
 
                 <section>
 
@@ -131,10 +241,150 @@
 
                 </section>
 
-    </div>
+                <section>
+
+                    <div class="content-wrap notopmargin nobottommargin notoppadding nobottompadding">
+
+                        <div class="container clearfix">
+
+                                <div class="heading-block center topmargin bottommargin-sm">
+                                    <h2>Game-changing advice. Simple pricing model.</h2>
+                                </div>
+
+                            <div class="aligncenter pricing bottommargin clearfix">
+
+                                <div class="padding-sm bottommargin-sm col-sm-3">
+
+                                    <div class="pricing-box">
+                                        <div class="pricing-title">
+                                            <h3>Ivy League</h3>
+                                            <span>Admissions Officer</span>
+                                        </div>
+                                        <div class="pricing-price">
+                                            <span class="price-unit">&dollar;</span>445<span class="price-tenure">per hour</span>
+                                        </div>
+                                        <div class="pricing-features">
+                                            <ul>
+                                                <li>Undergraduate</li>
+                                                <li><strike>Business School</strike>
+                                                <li><strike>Law School</strike> Coming Soon</li>
+                                                <li><strike>Medical School</strike> Coming Soon</li>
+                                            </ul>
+                                        </div>
+                                        <div class="pricing-action">
+                                            <a href="#" class="button button-large btn-block button-border">Book</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="padding-sm bottommargin-sm col-sm-3">
+
+                                    <div class="pricing-box">
+                                        <div class="pricing-title">
+                                            <h3>Top 20</h3>
+                                            <span>Admissions Officer</span>
+                                        </div>
+                                        <div class="pricing-price">
+                                            <span class="price-unit">&dollar;</span>245<span class="price-tenure">per hour</span>
+                                        </div>
+                                        <div class="pricing-features">
+                                            <ul>
+                                                <li>Undergraduate</li>
+                                                <li>Business School</li>
+                                                <li>Law School</li>
+                                                <li>Medical School</li>
+                                            </ul>
+                                        </div>
+                                        <div class="pricing-action">
+                                            <a href="#" class="button button-large btn-block button-border">Book</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="padding-sm bottommargin-sm col-sm-3">
+
+                                    <div class="pricing-box">
+                                        <div class="pricing-title">
+                                            <h3>Top 40</h3>
+                                            <span>Admissions Officer</span>
+                                        </div>
+                                        <div class="pricing-price">
+                                            <span class="price-unit">&dollar;</span>185<span class="price-tenure">per hour</span>
+                                        </div>
+                                        <div class="pricing-features">
+                                            <ul>
+                                                <li>Undergraduate</li>
+                                                <li>Business School</li>
+                                                <li>Law School</li>
+                                                <li>Medical School</li>
+                                            </ul>
+                                        </div>
+                                        <div class="pricing-action">
+                                            <a href="#" class="button button-large btn-block button-border">Book</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="padding-sm bottommargin-sm col-sm-3">
+
+                                    <div class="pricing-box">
+                                        <div class="pricing-title">
+                                            <h3>Ivy League</h3>
+                                            <span>Test Prep Instructor</span>
+                                        </div>
+                                        <div class="pricing-price">
+                                            <span class="price-unit">&dollar;</span>285<span class="price-tenure">per hour</span>
+                                        </div>
+                                        <div class="pricing-features">
+                                            <ul>
+                                                <li>SAT or ACT</li>
+                                                <li>GMAT</li>
+                                                <li>LSAT</li>
+                                                <li>MCAT</li>
+                                            </ul>
+                                        </div>
+                                        <div class="pricing-action">
+                                            <a href="#" class="button button-large btn-block button-border">Book</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section><! #content end -->
+
+<!--     </div>
 
     <div class="clear"></div><div class="line notopmargin nobottommargin"></div>
 
+                    <div class="center" style="margin-top: 15px; margin-bottom: 60px">
+                        <font color="#F2F2F">I need an admissions officer to help me with</font>
+                    </div>
+
+                    <div class="container clearfix center nopadding topmargin-sm" width="400px">
+                                <select id="template-contactform-service" name="template-contactform-service" class="form-control input-lg not-dark">
+                                    <option value="">Personal Statement</option>
+                                    <option value="Test Preparation">Essays</option>
+                                    <option value="School Selection">School Selection</option>
+                                    <option value="Essay Editing">Essay Editing</option>
+                                    <option value="Application Structuring">Application Structuring</option>
+                                    <option value="Interview Preparation">Interview Preparation</option>
+                                </select>
+                    </div>
+
+                    <div class="center nopadding topmargin-sm">
+                        <button href="#signup" data-toggle="modal" class="button button-large button-rounded topmargin-sm nobottommargin" type="submit" id="enrollid" name="template-contactform-submit" value="submit">Private Beta Signup</button>
+                    </div>
+  -->
         <!-- Footer
         ============================================= -->
         <footer id="footer" class="light">
@@ -146,12 +396,18 @@
 
                 <div class="container clearfix">
 
-                    <div class="col_half">
+                    <div class="col-sm-6 topmargin-sm">
                         <b>Admissions Officer?</b> Contact us by phone or by email.<br>
                         Copyright &copy; 2015 HyperAdmit<br>
                         <div><i class="icon-globe"></i> 79 Madison Ave, 3rd Floor, New York, NY 10016
                         </div>
                         <i class="icon-envelope2"></i> contact@hyperadmit.com <span class="middot">&middot;</span> <i class="icon-call"></i> (212) 804-8902
+                    </div>
+
+                    <div class="col-sm-6 topmargin-sm" align="center">
+
+                        <img src="static/images/madeinny.png" width="100" height="100" alt="">
+
                     </div>
 
                 </div>
