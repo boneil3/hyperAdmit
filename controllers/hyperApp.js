@@ -33,10 +33,8 @@ hyperApp.config(['$routeProvider', function ($routeProvider) {
             controller: 'aboutCtrl',
             controllerAs: 'vm'
         })
-        .when('/freeTrial', {
-            templateUrl: 'freeTrial',
-            controller: 'freeTrialCtrl',
-            controllerAs: 'vm'
+        .when('/finishTrial', {
+            templateUrl: 'static/html/finishTrial'
         })
         .otherwise({
             redirectTo: '/home'

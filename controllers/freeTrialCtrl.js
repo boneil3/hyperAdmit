@@ -22,7 +22,7 @@ hyperApp.controller('freeTrialCtrl', function ($location, $scope, $window, $moda
                 sessionService.set('email', response.email);
                 $location.path('/finishTrial');
             }
-        })
+        });
     };
 
     $scope.cancel = function() {
