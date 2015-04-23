@@ -1,6 +1,7 @@
-var hyperApp = angular.module('hyperApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'angular-google-gapi']);
+var hyperApp = angular.module('hyperApp', ['ngResource', 'ngRoute', 'ui.bootstrap', 'angular-google-gapi', 'angularPayments']);
 
 hyperApp.config(['$routeProvider', function ($routeProvider) {
+
     $routeProvider
         .when('/signup', {
             templateUrl: 'signup',
