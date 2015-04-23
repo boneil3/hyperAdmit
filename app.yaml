@@ -9,32 +9,28 @@ handlers:
   script: main.APPLICATION
 
 - url: /
-  static_files: index.html
-  upload: index\.html
-
-- url: /officers
-  static_files: officerList.html
-  upload: officerList\.html
+  static_files: static/html/index.html
+  upload: static/html/index\.html
 
 - url: /login
-  static_files: login.html
-  upload: login\.html
+  static_files: static/html/login.html
+  upload: static/html/login\.html
 
 - url: /signup
-  static_files: signup.html
-  upload: signup\.html
+  static_files: static/html/signup.html
+  upload: static/html/signup\.html
 
 - url: /home
-  static_files: home.html
-  upload: home\.html
+  static_files: static/html/home.html
+  upload: static/html/home\.html
 
 - url: /checkout
-  static_files: checkout.html
-  upload: checkout\.html
+  static_files: static/html/checkout.html
+  upload: static/html/checkout\.html
 
 - url: /about
-  static_files: about.html
-  upload: about\.html
+  static_files: static/html/about.html
+  upload: static/html/about\.html
   
 - url: /controllers
   static_dir: controllers
