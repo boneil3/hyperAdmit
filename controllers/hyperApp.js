@@ -33,6 +33,11 @@ hyperApp.config(['$routeProvider', function ($routeProvider) {
             controller: 'aboutCtrl',
             controllerAs: 'vm'
         })
+        .when('/freeTrial', {
+            templateUrl: 'freeTrial',
+            controller: 'freeTrialCtrl',
+            controllerAs: 'vm'
+        })
         .otherwise({
             redirectTo: '/home'
         });
@@ -91,7 +96,7 @@ hyperApp.run(['$window', 'GApi', '$rootScope', '$location', 'loginService', func
     GApi.load('oauth2', 'v2');
 
     $rootScope.$on('$routeChangeStart', function () {
-        if ($location.path() !== '/login' && !loginService.isLogged() && $location.path() !== '/signup' && $location.path() !== '/reset' && $location.path() !== '/home' && $location.path() !== '/about') {
+        if ($location.path() !== '/login' && !loginService.isLogged() && $location.path() !== '/signup' && $location.path() !== '/reset' && $location.path() !== '/home' && $location.path() !== '/about' && location.path() !== '/freeTrial') {
             $location.path('/home');
         }
     });
