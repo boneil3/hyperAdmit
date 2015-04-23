@@ -27,7 +27,7 @@ hyperApp.controller('officerListCtrl', ['$location', '$scope', '$window', '$time
                 ad_off.whoami = item.whoami;
                 ad_off.job_title = item.job_title;
                 ad_off.knowledge_areas = item.knowledge_areas;
-                ad_off.last_active = item.last_active;
+                ad_off.last_active = item.last_active.substring(0, item.last_active.length - 16);
                 ad_off.location = item.location;
                 ad_off.school = item.school;
                 ad_off.school_type = item.school_type;
@@ -68,7 +68,7 @@ hyperApp.controller('officerListCtrl', ['$location', '$scope', '$window', '$time
                             ad.location = item.location;
                             ad.rating = item.rating;
                             ad.hours_consulted = item.hours_consulted;
-                            ad.last_active = item.last_active;
+                            ad.last_active = item.last_active.substring(0, item.last_active.length - 16);
                             ad.knowledge_areas = item.knowledge_areas;
                             ad.whoami = item.whoami;
                             ad.howcanihelp = item.howcanihelp;
@@ -87,6 +87,8 @@ hyperApp.controller('officerListCtrl', ['$location', '$scope', '$window', '$time
         GApi.execute('centralparkedu', 'hyperadmit.get_all_addOffs', {
             'user_id': sessionService.get('user_id'),
             'user_token': sessionService.get('token'),
+            'school_type': vm.dropdownSelected[0],
+            'college_rank': vm.dropdownSelected[1],
             'pageToken': vm.lastPageToken
             }).then(function (response) {
             if (response.code >= 400) {
@@ -101,7 +103,7 @@ hyperApp.controller('officerListCtrl', ['$location', '$scope', '$window', '$time
                         ad_off.whoami = item.whoami;
                         ad_off.job_title = item.job_title;
                         ad_off.knowledge_areas = item.knowledge_areas;
-                        ad_off.last_active = item.last_active;
+                        ad_off.last_active = item.last_active.substring(0, item.last_active.length - 16);
                         ad_off.location = item.location;
                         ad_off.school = item.school;
                         ad_off.school_type = item.school_type;

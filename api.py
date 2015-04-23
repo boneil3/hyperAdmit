@@ -4,10 +4,9 @@ import webapp2
 
 from backend.auth import *
 
-
 config = {
     'webapp2_extras.auth': {
-        'user_model': 'models.User',
+        'user_model': 'backend.models.User',
         'user_attributes': ['email']
     },
     'webapp2_extras.sessions': {

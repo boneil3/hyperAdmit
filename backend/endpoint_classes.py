@@ -1,13 +1,14 @@
 __author__ = 'Brendan'
 import sys
-sys.path.insert(0, 'libs')
-
+sys.path.insert(0, 'lib')
+sys.path.insert(0, 'stripe')
 from webapp2_extras.auth import InvalidPasswordError, InvalidAuthIdError
 from protorpc import remote
 from backend.models import AdmissionsOfficer
 from backend.models import User
 from backend.utils import *
 
+import stripe
 
 centralparkedu = endpoints.api(name='centralparkedu', version='v1',
                                allowed_client_ids=[endpoints.API_EXPLORER_CLIENT_ID],
@@ -41,11 +42,11 @@ class HyperAdmit(remote.Service):
             cursor = ndb.Cursor.from_websafe_string(request.last_cursor)
 
         school_type = None
-        if request.school_type:
+        if request.school_type and request.school_type != '':
             school_type = request.school_type
 
         college_rank = None
-        if request.college_rank:
+        if request.college_rank and request.college_rank != '':
             college_rank = request.college_rank
 
         if school_type and college_rank:

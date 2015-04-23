@@ -84,9 +84,9 @@
                         <accordion-group ng-repeat="ad_off in vm.ad_offs" heading="{{ ad_off.alias }}">
 
                             <accordion-heading>
+                                <span><strong>{{ ad_off.alias }}</strong></span><br>
                                 <ul class="entry-meta clearfix">
-                                    <li><strong>{{ ad_off.alias }}</strong></li><br>
-                                    <li><span class="label label-warning">{{ ad_off.verified }}</span></li>
+                                    <li><span class="label label-warning">Verified</span></li>
                                     <li><i class="icon-time"></i>{{ ad_off.hours_consulted }} consultations in last 30 days</li>
                                     <li><i class="icon-map-marker2"></i> United States</li>
                                     <li><i class="icon-user4"></i> {{ ad_off.school_type }}</li>
@@ -94,21 +94,23 @@
                                     <li><i class="icon-user4"></i> {{ ad_off.last_active }}</li>
                                 </ul>
                             </accordion-heading>
-
-                            <div>
-                                Who am I?<br>
-                                <span>{{ ad_off.whoami }}</span>
-                            </div>
-                            <div class="line"></div>
-                            <div>
-                                How I Can Help<br>
-                                <span>{{ ad_off.howcanihelp }}</span>
-                            </div>
-                            <div>
-                                <button ng-click="vm.addAppt(user)">Add Appointment!</button>
+                            <div class="entry-c">
+                                <div>
+                                    <span>Who am I?</span><br>
+                                    <span>{{ ad_off.whoami }}</span>
+                                </div>
+                                <div class="line"></div>
+                                <div>
+                                    <span>How I Can Help</span><br>
+                                    <span>{{ ad_off.howcanihelp }}</span>
+                                </div>
+                                <div>
+                                    <br><button class="btn btn-danger" ng-click="vm.addAppt(ad_off)">Add Appointment!</button>
+                                </div>
                             </div>
                         </accordion-group>
                     </accordion>
+                    <span><button ng-if="vm.nextPageToken != ''" class="btn btn-info" ng-click="vm.get_more_adoffs()">More ...</button></span>
                     <!--
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default">

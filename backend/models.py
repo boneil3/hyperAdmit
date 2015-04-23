@@ -16,24 +16,9 @@ import time
 class ModelUtils(object):
 
     def to_dict(self):
-        result = super(ModelUtils, self).to_dict(exclude=['password', 'updated', 'auth_ids'])
+        result = super(ModelUtils, self).to_dict(exclude=['password', 'updated', 'auth_ids', 'email'])
         result['user_id'] = str(self.key.id())
         result['userCreatedAt'] = str(self.created)
-
-        if result['full_name'] is None:
-            result['full_name'] = result['first_name'] + " " + result['last_name']
-            result['full_name_lower'] = result['full_name'].toLower()
-
-        if self.headerSmallUrl is None:
-            result['headerSmallUrl'] = ""
-
-        if self.headerLargeUrl is None:
-            result['headerLargeUrl'] = ""
-
-        if not self.deviceToken:
-            result['deviceToken'] = ""
-
-        del result['email']
 
         return result
 
@@ -48,7 +33,7 @@ class Appointments(EndpointsModel):
     scheduled = EndpointsDateTimeProperty(auto_now_add=True)
 
 
-class User(EndpointsModel, webapp2_extras.appengine.auth.models.User):
+class User(ModelUtils, EndpointsModel, webapp2_extras.appengine.auth.models.User):
     """ User Base Model """
 
     email = ndb.StringProperty(required=True)

@@ -164,7 +164,6 @@ class LoginHandler(BaseHandler):
             # Merge both objects: auth user object and custom user model
             user_dict = user.to_dict()
             del user_dict['created']
-            del user_dict['updated']
             results = dict(u.items() + user_dict.items())
 
             results['email'] = email
