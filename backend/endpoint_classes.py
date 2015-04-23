@@ -1,16 +1,12 @@
 __author__ = 'Brendan'
 import sys
 sys.path.insert(0, 'libs')
-from google.appengine.ext import ndb
-import endpoints
 
 from webapp2_extras.auth import InvalidPasswordError, InvalidAuthIdError
-from protorpc import messages
-from protorpc import message_types
 from protorpc import remote
-from models import AdmissionsOfficer
-from models import User
-from utils import *
+from backend.models import AdmissionsOfficer
+from backend.models import User
+from backend.utils import *
 
 
 centralparkedu = endpoints.api(name='centralparkedu', version='v1',

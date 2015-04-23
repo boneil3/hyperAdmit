@@ -1,21 +1,13 @@
 __author__ = 'brendan'
 
-import os
-import os.path
-import logging
-import uuid
-import hashlib
-import sys
 import json
 
 from webapp2_extras.appengine.auth.models import UserToken
 from webapp2_extras.auth import InvalidAuthIdError
 from webapp2_extras.auth import InvalidPasswordError
-from webapp2_extras import security
-from google.appengine.ext import ndb
 
-from models import User
-from basehandlers import BaseHandler
+from backend.models import User
+from backend.basehandlers import BaseHandler
 
 #sys.path.insert(0, 'stripe')
 #import stripe
@@ -130,7 +122,6 @@ class SignupHandler(BaseHandler):
         user_dict['email'] = email
 
         del user_dict['created']
-        del user_dict['joined']
         del user_dict['updated']
         print user_dict
 
@@ -173,7 +164,6 @@ class LoginHandler(BaseHandler):
             # Merge both objects: auth user object and custom user model
             user_dict = user.to_dict()
             del user_dict['created']
-            del user_dict['joined']
             del user_dict['updated']
             results = dict(u.items() + user_dict.items())
 

@@ -1,9 +1,9 @@
 __author__ = 'brendan'
 
-
 import webapp2
-import webapp2_extras
-from auth import *
+
+from backend.auth import *
+
 
 config = {
     'webapp2_extras.auth': {

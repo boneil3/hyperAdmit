@@ -13,6 +13,31 @@ from webapp2_extras import security
 import time
 
 
+class ModelUtils(object):
+
+    def to_dict(self):
+        result = super(ModelUtils, self).to_dict(exclude=['password', 'updated', 'auth_ids'])
+        result['user_id'] = str(self.key.id())
+        result['userCreatedAt'] = str(self.created)
+
+        if result['full_name'] is None:
+            result['full_name'] = result['first_name'] + " " + result['last_name']
+            result['full_name_lower'] = result['full_name'].toLower()
+
+        if self.headerSmallUrl is None:
+            result['headerSmallUrl'] = ""
+
+        if self.headerLargeUrl is None:
+            result['headerLargeUrl'] = ""
+
+        if not self.deviceToken:
+            result['deviceToken'] = ""
+
+        del result['email']
+
+        return result
+
+
 class Appointments(EndpointsModel):
 
     start_dt = EndpointsDateTimeProperty(required=True)
@@ -26,7 +51,6 @@ class Appointments(EndpointsModel):
 class User(EndpointsModel, webapp2_extras.appengine.auth.models.User):
     """ User Base Model """
 
-    joined = EndpointsDateTimeProperty(auto_now=True)
     email = ndb.StringProperty(required=True)
     first_name = ndb.StringProperty(required=True)
     last_name = ndb.StringProperty(required=True)

@@ -83,8 +83,9 @@
                     <accordion close-others="oneAtATime">
                         <accordion-group ng-repeat="ad_off in vm.ad_offs" heading="{{ ad_off.alias }}">
 
-                            <div>
+                            <accordion-heading>
                                 <ul class="entry-meta clearfix">
+                                    <li><strong>{{ ad_off.alias }}</strong></li><br>
                                     <li><span class="label label-warning">{{ ad_off.verified }}</span></li>
                                     <li><i class="icon-time"></i>{{ ad_off.hours_consulted }} consultations in last 30 days</li>
                                     <li><i class="icon-map-marker2"></i> United States</li>
@@ -92,7 +93,7 @@
                                     <li><i class="icon-user4"></i> {{ ad_off.job_title }}</li>
                                     <li><i class="icon-user4"></i> {{ ad_off.last_active }}</li>
                                 </ul>
-                            </div>
+                            </accordion-heading>
 
                             <div>
                                 Who am I?<br>
