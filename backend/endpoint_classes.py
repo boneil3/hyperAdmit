@@ -30,8 +30,8 @@ class HyperAdmit(remote.Service):
         new_user = FreeUser(email=request.email, first_name=request.first_name, last_name=request.last_name,
                             phone=request.phone, school_type=request.school_type)
 
-        ret_user = new_user.put()
-
+        ret_user_key = new_user.put()
+        ret_user = ret_user_key.get()
         return FreeUser.ToMessage(ret_user)
 
     @endpoints.method(path='sendemail', http_method='POST', name='send_email')

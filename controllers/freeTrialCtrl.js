@@ -21,6 +21,7 @@ hyperApp.controller('freeTrialCtrl', function ($location, $scope, $window, $moda
             }
             else {
                 sessionService.set('email', response.email);
+                $modalInstance.dismiss('signed up!');
                 $location.path('/finishTrial');
             }
         });
