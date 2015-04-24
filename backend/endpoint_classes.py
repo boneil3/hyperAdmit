@@ -6,7 +6,10 @@ from webapp2_extras.auth import InvalidPasswordError, InvalidAuthIdError
 from protorpc import remote
 from backend.models import AdmissionsOfficer
 from backend.models import User
+from backend.models import FreeUser
 from backend.utils import *
+from sendgrid import SendGridClient
+from sendgrid import Mail
 
 import stripe
 
@@ -18,6 +21,37 @@ centralparkedu = endpoints.api(name='centralparkedu', version='v1',
 @centralparkedu.api_class(resource_name='hyperadmit', path='hyperadmit')
 class HyperAdmit(remote.Service):
     """ HyperAdmit API v1 """
+
+    @endpoints.method(USER_NEW_RC,
+                      FreeUser.ProtoModel(),
+                      path='freetrialsignup', http_method='POST', name='free_trial_signup')
+    def free_trial_signup(self, request):
+
+        new_user = FreeUser(email=request.email, first_name=request.first_name, last_name=request.last_name,
+                            phone=request.phone, school_type=request.school_type)
+
+        ret_user = new_user.put()
+
+        return FreeUser.ToMessage(ret_user)
+
+    @endpoints.method(path='sendemail', http_method='POST', name='send_email')
+    def send_email(self, request):
+        # make a secure connection to SendGrid
+        sg = SendGridClient(get_mail_username(), get_mail_pass(), secure=True)
+
+        # make a message object
+        message = Mail()
+        message.set_subject('message subject')
+        message.set_html('<strong>HTML message body</strong>')
+        message.set_text('plaintext message body')
+        message.set_from('from@example.com')
+
+        # add a recipient
+        message.add_to('John Doe <yury191@gmail.com>')
+
+        # use the Web API to send your message
+        sg.send(message)
+        return message_types.VoidMessage()
 
     @endpoints.method(USER_AUTH_RC,
                       AdmissionsOfficer.ProtoModel(),

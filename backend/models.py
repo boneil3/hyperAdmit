@@ -33,6 +33,16 @@ class Appointments(EndpointsModel):
     scheduled = EndpointsDateTimeProperty(auto_now_add=True)
 
 
+class FreeUser(ModelUtils, EndpointsModel):
+    """ Free Signup User Model """
+
+    email = ndb.StringProperty(required=True)
+    first_name = ndb.StringProperty(required=True)
+    last_name = ndb.StringProperty(required=True)
+    phone = ndb.StringProperty(required=True)
+    school_type = ndb.StringProperty(required=True)
+
+
 class User(ModelUtils, EndpointsModel, webapp2_extras.appengine.auth.models.User):
     """ User Base Model """
 

@@ -6,14 +6,15 @@ hyperApp.controller('freeTrialCtrl', function ($location, $scope, $window, $moda
 
     var vm = this;
         vm.user = {};
+        vm.schoolTypes = ['undergrad', 'business', 'law', 'medical'];
 
-    vm.submitFreeTrial = function (user, school_type) {
+    vm.submitFreeTrial = function (user) {
         GApi.execute('centralparkedu', 'hyperadmit.free_trial_signup', {
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
             'phone': user.phone,
-            'school_type': school_type
+            'school_type': user.school_type
         }).then(function (response) {
             if (response.code >= 400) {
                 window.alert('Error Processing Request!');
@@ -22,6 +23,12 @@ hyperApp.controller('freeTrialCtrl', function ($location, $scope, $window, $moda
                 sessionService.set('email', response.email);
                 $location.path('/finishTrial');
             }
+        });
+    };
+
+    vm.sendEmail = function() {
+        GApi.execute('centralparkedu', 'hyperadmit.send_email').then(function (response) {
+            //
         });
     };
 

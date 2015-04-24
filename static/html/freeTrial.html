@@ -44,32 +44,31 @@
 
                     <div class="col_half">
                         <label for="register-form-undergraduate"></label>
-                        <input type="checkbox" ng-model="user.undergraduate" id="register-form-undergradaute" name="register-form-email" value="undergraduate" placeholder="Email Address" class="form-control input not-dark" />Undergraduate School
+                        <input type="radio" ng-model="user.school_type" id="register-form-undergradaute" name="register-form-undergraduate" value="undergrad" placeholder="Email Address" class="form-control input not-dark" />Undergraduate School
                     </div>
 
                     <div class="col_half col_last">
                         <label for="register-form-phone"></label>
-                        <input type="checkbox" ng-model="user.business" id="register-form-business" name="register-form-business" value="" placeholder="Phone" class="form-control input not-dark" />Business School
+                        <input type="radio" ng-model="user.school_type" id="register-form-business" name="register-form-business" value="business" placeholder="Phone" class="form-control input not-dark" />Business School
                     </div>
 
                     <div class="col_half">
                         <label for="register-form-law"></label>
-                        <input type="checkbox" ng-model="user.law" id="register-form-law" name="register-form-law" value="" placeholder="Email Address" class="form-control input not-dark" />Law School
+                        <input type="radio" ng-model="user.school_type" id="register-form-law" name="register-form-law" value="law" placeholder="Email Address" class="form-control input not-dark" />Law School
                     </div>
 
                     <div class="col_half col_last">
                         <label for="register-form-phone"></label>
-                        <input type="checkbox" ng-model="user.medical" id="register-form-medical" name="register-form-medical" value="" placeholder="Phone" class="form-control input not-dark" />Medical School
+                        <input type="radio" ng-model="user.school_type" id="register-form-medical" name="register-form-medical" value="medical" placeholder="Phone" class="form-control input not-dark" />Medical School
                     </div>
 
                     <div class="center topmargin-sm bottommargin-sm">
-                        <button ng-click="signup(user)" class="button button-large button button-rounded nomargin" id="register-form-submit" name="register-form-submit" value="register">Register</button>
+                        <button ng-click="vm.submitFreeTrial(user)" class="button button-large button button-rounded nomargin" id="register-form-submit" name="register-form-submit" value="register">Register</button>
                     </div>
 
                     <span align="center">By clicking here you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
 
                 </form>
-
         </div>
 
     </section>

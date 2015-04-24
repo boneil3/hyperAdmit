@@ -8,10 +8,10 @@ from webapp2_extras.auth import InvalidPasswordError
 
 from backend.models import User
 from backend.basehandlers import BaseHandler
-
-#sys.path.insert(0, 'stripe')
-#import stripe
-
+import sys
+sys.path.insert(0, 'stripe')
+import stripe
+from backend import utils
 
 # Decorators
 
@@ -59,9 +59,7 @@ class SignupHandler(BaseHandler):
     """Signup New User"""
 
     def post(self):
-        #self.response.headers['Access-Control-Allow-Origin'] = 'https://sandboxx.herokuapp.com'
-        #  TODO: Change in basehandlers.py
-        #self.response.headers['Access-Control-Allow-Origin'] = 'http://localhost:9000'
+
         self.response.headers['Content-Type'] = "application/json"
 
         # Does e-mail already exist?
@@ -80,15 +78,15 @@ class SignupHandler(BaseHandler):
             self.send_response(self.RESPONSE_CODE_400, msg, "")
             return
 
-        '''# Create Stripe customer
-        stripe.api_key = constants.get_stripe_api_key()
+        # Create Stripe customer
+        stripe.api_key = utils.get_stripe_api_key()
         stripe_customer = stripe.Customer.create()
         stripe_customer_id = stripe_customer.id
 
         # If stripe customer Id doesn't exist, set to None
         if not stripe_customer_id:
             stripe_customer_id = None
-        '''
+
 
 
 
